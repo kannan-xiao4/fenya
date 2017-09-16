@@ -1,6 +1,6 @@
 ﻿using Interface;
+using Model;
 using UniRx;
-using DateTime = System.DateTime;
 using TimeSpan = System.TimeSpan;
 
 namespace ViewModel
@@ -9,26 +9,24 @@ namespace ViewModel
     {
         public IObservable<int> remainHp
         {
-            get { return remainHpViewModel; }
+            get { return Model.remainHpAsObservable; }
         }
-
-        private readonly ReactiveProperty<int> remainHpViewModel = new ReactiveProperty<int>(50000);
 
         public IObservable<TimeSpan> remainTime
         {
-            get { return remainTimeViewModel; }
+            get { return Model.remainTimeAsObservable; }
         }
 
-        private readonly ReactiveProperty<TimeSpan> remainTimeViewModel =
-            new ReactiveProperty<TimeSpan>(DateTime.Now - DateTime.Today);
+        private MainCat Model { get; set; }
 
         public void OnCLickAttackButton(float damage)
         {
-            remainHpViewModel.Value = (int)(damage * 1000);
+            Model.OnCLickAttackButton(damage);
         }
 
-        public MainCatViewModel()
+        public MainCatViewModel(MainCat model)
         {
+            Model = model;
         }
     }
 }

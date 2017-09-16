@@ -29,6 +29,10 @@ namespace View
         [SerializeField]
         private Button attackButton;
 
+        /// <summary>
+        /// ViewModelをBind
+        /// </summary>
+        /// <param name="viewModel"></param>
         public void Bind(IMainCatViewModel viewModel)
         {
             viewModel.remainHp.SubscribeToText(remainHpText).AddTo(this);
@@ -56,10 +60,13 @@ namespace View
                     var sprite = catSprites[CalucurateIndex(rand)];
                     catMainImage.sprite = sprite;
                 }).AddTo(this);
-            
-            Bind(new MainCatViewModel());
         }
 
+        /// <summary>
+        /// 表示する画像を抽選する
+        /// </summary>
+        /// <param name="rand"></param>
+        /// <returns></returns>
         private int CalucurateIndex(int rand)
         {
             if (rand == 1) return 2;
