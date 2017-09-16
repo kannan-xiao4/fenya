@@ -1,16 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Model;
+using Utility;
 
-public class GameManager : MonoBehaviour {
+namespace Manager
+{
+    public class GameManager : SingletonMonoBehaviour<GameManager>
+    {
+        private void Start()
+        {
+            ProcessMainCat();
+        }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        /// <summary>
+        /// モデルを作成して表示する
+        /// </summary>
+        private void ProcessMainCat()
+        {
+            var model = new MainCat();
+            model.Show();
+        }
+    }
 }
