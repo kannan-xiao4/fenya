@@ -5,7 +5,7 @@ namespace Interface
 {
     public interface IMainCatViewModel
     {
-        IObservable<int> remainHp { get; }
+        IObservable<long> remainHp { get; }
         
         IObservable<TimeSpan> remainTime { get; }
 
