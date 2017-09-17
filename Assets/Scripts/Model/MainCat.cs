@@ -1,10 +1,14 @@
 ﻿using Manager;
+using NCMB;
 using PageSettings;
 using UniRx;
+using UnityEngine;
+using ValueObject;
 using View;
 using ViewModel;
-using DateTime = System.DateTime;
+using NCMBManager = Manager.NCMBManager;
 using TimeSpan = System.TimeSpan;
+using DateTime = System.DateTime;
 
 namespace Model
 {
@@ -14,25 +18,28 @@ namespace Model
     public class MainCat
     {
         private readonly MainCatViewModel viewModel;
-        
-        public IObservable<int> remainHpAsObservable
-        {
-            get { return remainHp; }
-        }
 
-        private readonly ReactiveProperty<int> remainHp = new ReactiveProperty<int>(50000);
+        private readonly ReactiveProperty<FenyaVO> fenyaObject = new ReactiveProperty<FenyaVO>();
 
-        public IObservable<TimeSpan> remainTimeAsObservable
-        {
-            get { return remainTime; }
-        }
+        /// <summary>
+        /// Fenyaの残りHP
+        /// </summary>
+        public ReactiveProperty<long> remainHpAsObservable = new ReactiveProperty<long>();
 
-        private readonly ReactiveProperty<TimeSpan> remainTime =
-            new ReactiveProperty<TimeSpan>(DateTime.Now - DateTime.Today);
+        /// <summary>
+        /// Fenyaの残り時間
+        /// </summary>
+        public ReactiveProperty<TimeSpan> remainTimeAsObservable = new ReactiveProperty<TimeSpan>();
 
+        /// <summary>
+        /// 攻撃ボタンを押したときの動作
+        /// </summary>
+        /// <param name="damage"></param>
         public void OnCLickAttackButton(float damage)
         {
-            remainHp.Value -= (int) (damage * 1000);
+            remainHpAsObservable.Value -= (int) (damage * 1000);
+            NCMBManager.Instance.PostFenyaHp(new FenyaVO(fenyaObject.Value.ObjectId, remainHpAsObservable.Value))
+                .Subscribe(Debug.Log, Debug.LogError);
         }
 
         /// <summary>
@@ -41,6 +48,13 @@ namespace Model
         public MainCat()
         {
             viewModel = new MainCatViewModel(this);
+            NCMBManager.Instance.FetchFenyaObject().Subscribe(obj => fenyaObject.Value = obj);
+
+            fenyaObject.Where(x => x != null).Subscribe(obj =>
+            {
+                remainTimeAsObservable.Value = obj.RemaiTimeSpan;
+                remainHpAsObservable.Value = obj.RemainHP;
+            });
         }
 
         /// <summary>

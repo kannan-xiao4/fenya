@@ -7,7 +7,7 @@ namespace ViewModel
 {
     public class MainCatViewModel : IMainCatViewModel
     {
-        public IObservable<int> remainHp
+        public IObservable<long> remainHp
         {
             get { return Model.remainHpAsObservable; }
         }
