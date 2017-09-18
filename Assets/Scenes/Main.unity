@@ -430,8 +430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360b6e68389f6481cb6625678a3238d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applicationKey: 11d8b71c6dae0b0f6861b180b2427ec37482697b6b71c875bdca52e2992eb50f
-  clientKey: e601841614ca177826b1507680d8ed89291a057e57e7bfc2a17ecdfc5ec7803f
+  applicationKey: 
+  clientKey: 
   usePush: 0
   useAnalytics: 0
   androidSenderId: 

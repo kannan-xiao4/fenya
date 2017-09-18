@@ -1,5 +1,6 @@
 ﻿using Model;
 using Utility;
+using ValueObject;
 
 namespace Manager
 {
@@ -7,7 +8,9 @@ namespace Manager
     {
         private void Start()
         {
-            ProcessMainCat();
+            var player = new PlayerVO("hogehoge", "fugafuga");
+            NCMBManager.Instance.SignUp(player);
+            
         }
 
         /// <summary>
