@@ -63,7 +63,7 @@ namespace Model
         public void Show()
         {
             var uiManager = UIManager.Instance;
-            uiManager.InstancePage<MainCatSetting>();
+            uiManager.ReplaceCurrentPage<MainCatSetting>();
             uiManager.GetCurrentView<MainCatView>().Bind(viewModel);
         }
     }

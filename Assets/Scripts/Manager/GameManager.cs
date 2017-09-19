@@ -1,4 +1,5 @@
 ﻿using Model;
+using UniRx;
 using Utility;
 using ValueObject;
 
@@ -8,11 +9,17 @@ namespace Manager
     {
         private void Start()
         {
-            var player = new PlayerVO("hogehoge", "fugafuga");
-            NCMBManager.Instance.SignUp(player);
-            
+            ProcessLogin();
         }
 
+        private void ProcessLogin()
+        {
+            var model = new Login();
+            model.Show();
+
+            model.LoginSuccessAsObservable().First().Subscribe(_ => ProcessMainCat()).AddTo(this);
+        }
+        
         /// <summary>
         /// モデルを作成して表示する
         /// </summary>

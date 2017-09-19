@@ -24,6 +24,12 @@ namespace ValueObject
             return user;
         }
 
+        public PlayerVO(string userName)
+        {
+            UserName = userName;
+            Password = "fenya";
+        }
+        
         public PlayerVO(string userName, string password)
         {
             UserName = userName;

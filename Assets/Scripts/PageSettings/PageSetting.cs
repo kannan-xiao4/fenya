@@ -7,11 +7,11 @@ namespace PageSettings
         [SerializeField]
         protected GameObject pagePrefab;
 
-        private GameObject pageInstance;
+        private GameObject instance;
 
-        public GameObject PageInstance
+        public GameObject Instance
         {
-            get { return pageInstance; }
+            get { return instance ?? (instance = Instantiate(pagePrefab)); }
         }
 
         /// <summary>
@@ -20,7 +20,18 @@ namespace PageSettings
         /// <param name="parent"></param>
         public void InstantiatePage(Transform parent)
         {
-            pageInstance = Instantiate(pagePrefab, parent);
+            instance = Instantiate(pagePrefab, parent);
+        }
+
+        /// <summary>
+        /// ページを削除する
+        /// </summary>
+        public void DeletePage()
+        {
+            if (instance == null) return;
+
+            Destroy(instance);
+            instance = null;
         }
 
         /// <summary>
@@ -30,7 +41,7 @@ namespace PageSettings
         /// <returns></returns>
         public T GetPageView<T>()
         {
-            return pageInstance.GetComponent<T>();
+            return Instance.GetComponent<T>();
         }
 
         /// <summary>
