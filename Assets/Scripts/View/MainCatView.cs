@@ -4,19 +4,11 @@ using Interface;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using ViewModel;
-using Random = UnityEngine.Random;
 
 namespace View
 {
     public class MainCatView : MonoBehaviour
     {
-        [SerializeField]
-        private Image catMainImage;
-
-        [SerializeField]
-        private List<Sprite> catSprites;
-
         [SerializeField]
         private Text remainTimeText;
 
@@ -44,35 +36,11 @@ namespace View
                 attackButton.interactable = input != null;
             }).AddTo(this);
             
-            attackButton.OnClickAsObservable().Subscribe(_ =>
+            attackButton.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(5)).Subscribe(_ =>
             {
                 var damageHours = float.Parse(playerInputField.text);
                 viewModel.OnCLickAttackButton(damageHours);
             }).AddTo(this);
-        }
-        
-        private void Start()
-        {
-            Observable.Timer(TimeSpan.FromSeconds(1))
-                .Select(time => Random.Range(1, 100))
-                .Subscribe(rand =>
-                {
-                    var sprite = catSprites[CalucurateIndex(rand)];
-                    catMainImage.sprite = sprite;
-                }).AddTo(this);
-        }
-
-        /// <summary>
-        /// 表示する画像を抽選する
-        /// </summary>
-        /// <param name="rand"></param>
-        /// <returns></returns>
-        private int CalucurateIndex(int rand)
-        {
-            if (rand == 1) return 2;
-            if (rand <= 30) return 1;
-
-            return 0;
         }
     }
 }

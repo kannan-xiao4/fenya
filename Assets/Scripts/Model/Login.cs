@@ -5,6 +5,7 @@ using UnityEngine;
 using ValueObject;
 using View;
 using ViewModel;
+using TimeSpan = System.TimeSpan;
 
 namespace Model
 {
@@ -34,7 +35,7 @@ namespace Model
         {
             viewModel = new LoginViewModel(this);
 
-            playerReactive.Where(x => x != null).Subscribe(LoginByNCMB);
+            playerReactive.Where(x => x != null).ThrottleFirst(TimeSpan.FromSeconds(3)).Subscribe(LoginByNCMB);
         }
 
         /// <summary>

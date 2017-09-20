@@ -32,6 +32,20 @@ namespace Manager
         }
 
         /// <summary>
+        /// Fenyaへの攻撃を保存する
+        /// </summary>
+        /// <param name="fenyaVo"></param>
+        /// <param name="damage"></param>
+        /// <returns></returns>
+        public IObservable<NCMBObject> AttackFenyaByPlayer(FenyaVO fenyaVo, int damage)
+        {
+            var historyVo = new AttackHistoryVO(currentUser.UserName, fenyaVo, damage);
+            var historyObject = historyVo.CreateNcmbObject();
+
+            return historyObject.SaveAsyncAsStream();
+        }
+        
+        /// <summary>
         /// 受け取ったFenyaVOでサーバのFenyaを更新する
         /// </summary>
         /// <param name="fenyaVo"></param>
@@ -39,10 +53,26 @@ namespace Manager
         public IObservable<NCMBObject> PostFenyaHp(FenyaVO fenyaVo)
         {
             var fenyaObject = fenyaVo.CreateNcmbObject();
+            fenyaObject.FetchAsync();
 
             return fenyaObject.SaveAsyncAsStream();
         }
 
+        /// <summary>
+        /// ぷれいやーのダメージを記録し、FenyaのHpも更新する
+        /// </summary>
+        /// <param name="fenyaVo"></param>
+        /// <param name="damage"></param>
+        /// <returns>だめーじを受けたFenyaVO</returns>
+        public IObservable<FenyaVO> AttackAndFetchFenyaHp(FenyaVO fenyaVo, int damage)
+        {
+            var damagedFenya = new FenyaVO(fenyaVo.ObjectId, fenyaVo.RemainHP - damage);
+            return AttackFenyaByPlayer(fenyaVo, damage)
+                .Zip(PostFenyaHp(damagedFenya), (ncmb1, ncmb2) => new FenyaVO(ncmb2))
+                .First()
+                .Repeat();
+        }
+        
         /// <summary>
         /// PlayerVOを用いて新規会員登録を行う
         /// </summary>
