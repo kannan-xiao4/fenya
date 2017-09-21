@@ -37,9 +37,8 @@ namespace Model
         /// <param name="damage"></param>
         public void OnCLickAttackButton(float damage)
         {
-            remainHpAsObservable.Value -= (int) (damage * 1000);
-            NCMBManager.Instance.PostFenyaHp(new FenyaVO(fenyaObject.Value.ObjectId, remainHpAsObservable.Value))
-                .Subscribe(Debug.Log, Debug.LogError);
+            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, (int)damage * 1000)
+                .Subscribe(x => fenyaObject.Value = x, Debug.LogError);
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace Model
         public void Show()
         {
             var uiManager = UIManager.Instance;
-            uiManager.InstancePage<MainCatSetting>();
+            uiManager.ReplaceCurrentPage<MainCatSetting>();
             uiManager.GetCurrentView<MainCatView>().Bind(viewModel);
         }
     }

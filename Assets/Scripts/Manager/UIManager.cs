@@ -28,6 +28,33 @@ namespace Manager
             currentPageSetting = GetPageSetting<T>();
             currentPageSetting.InstantiatePage(pageLayer);
         }
+
+        /// <summary>
+        /// 現在のページを削除する
+        /// </summary>
+        public void DeleteCurrentPage()
+        {
+            currentPageSetting.DeletePage();
+        }
+
+        /// <summary>
+        /// 指定のページを削除する
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void DeletePage<T>() where T : PageSetting
+        {
+            GetPageSetting<T>().DeletePage();
+        }
+
+        /// <summary>
+        /// ページの置き換えを行う
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void ReplaceCurrentPage<T>() where T : PageSetting
+        {
+            DeleteCurrentPage();
+            InstancePage<T>();
+        }
         
         /// <summary>
         /// PageのViewを返す

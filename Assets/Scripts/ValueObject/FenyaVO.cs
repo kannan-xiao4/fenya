@@ -12,7 +12,7 @@ namespace ValueObject
     /// </summary>
     public class FenyaVO
     {
-        private const string FENYA_CLASS_NAME = "Fenya";
+        public const string FENYA_CLASS_NAME = "Fenya";
         private const string EXPIRE_DATE = "ExpireDate";
         private const string REMAIN_HP = "HP";
 
