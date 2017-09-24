@@ -34,6 +34,7 @@ namespace Manager
         /// </summary>
         public void DeleteCurrentPage()
         {
+            if(currentPageSetting == null) return;
             currentPageSetting.DeletePage();
         }
 

@@ -1,7 +1,6 @@
 ﻿using Model;
 using UniRx;
 using Utility;
-using ValueObject;
 
 namespace Manager
 {
@@ -12,14 +11,15 @@ namespace Manager
             ProcessLogin();
         }
 
+        /// <summary>
+        /// ログインプロセスを開始する
+        /// </summary>
         private void ProcessLogin()
         {
-            var model = new Login();
-            model.Show();
-
-            model.LoginSuccessAsObservable().First().Subscribe(_ => ProcessMainCat()).AddTo(this);
+            Login.LoginSuccessAsObservable().Subscribe(_ => ProcessMainCat());
+            Login.Process();
         }
-        
+
         /// <summary>
         /// モデルを作成して表示する
         /// </summary>
