@@ -5,14 +5,14 @@ namespace ViewModel
 {
     public class LoginViewModel : ILoginViewModel
     {
-        public Login Model { get; private set; }
-        
+        public ManualLogin Model { get; private set; }
+
         public void OnClickLoginButton(string userName)
         {
             Model.OnClickLoginButton(userName);
         }
 
-        public LoginViewModel(Login model)
+        public LoginViewModel(ManualLogin model)
         {
             Model = model;
         }

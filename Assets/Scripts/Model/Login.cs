@@ -9,48 +9,50 @@ using TimeSpan = System.TimeSpan;
 
 namespace Model
 {
-    public class Login
+    /// <summary>
+    /// ログイン処理を行うモデル
+    /// </summary>
+    public static class Login
     {
-        private readonly LoginViewModel viewModel;
+        private static readonly Subject<Unit> _noticeLogin = new Subject<Unit>();
 
-        private readonly ReactiveProperty<PlayerVO> playerReactive = new ReactiveProperty<PlayerVO>();
-
-        private readonly Subject<Unit> _noticeLogin = new Subject<Unit>();
-
-        public void OnClickLoginButton(string userName)
+        /// <summary>
+        /// ログイン処理が完了した通知
+        /// </summary>
+        /// <returns></returns>
+        public static IObservable<Unit> LoginSuccessAsObservable()
         {
-            playerReactive.Value = new PlayerVO(userName);
-        }
-
-        private void LoginByNCMB(PlayerVO player)
-        {
-            NCMBManager.Instance.LoginAsyncAsStream(player).Subscribe(user => _noticeLogin.OnNext(Unit.Default), exception =>
-            {
-                Debug.LogWarning(exception);
-                NCMBManager.Instance.SignUp(player).Subscribe(user => _noticeLogin.OnNext(Unit.Default), Debug.LogError);
-            });
-        }
-
-        public Login()
-        {
-            viewModel = new LoginViewModel(this);
-
-            playerReactive.Where(x => x != null).ThrottleFirst(TimeSpan.FromSeconds(3)).Subscribe(LoginByNCMB);
+            return _noticeLogin;
         }
 
         /// <summary>
-        /// 画面を表示する
+        /// ログインプロセス
         /// </summary>
-        public void Show()
+        public static void Process()
         {
-            var uiManager = UIManager.Instance;
-            uiManager.InstancePage<LoginSetting>();
-            uiManager.GetCurrentView<LoginView>().Bind(viewModel);
+            if (AutoLogin.CanAutoLogin())
+            {
+                AutoLogin.LoginByAutoName();
+                return;
+            }
+
+            var model = new ManualLogin();
+            model.Show();
         }
 
-        public IObservable<Unit> LoginSuccessAsObservable()
+        /// <summary>
+        /// PlayerVOを用いてNCMBにログインする
+        /// </summary>
+        /// <param name="player"></param>
+        public static void LoginByNCMB(PlayerVO player)
         {
-            return _noticeLogin;
+            NCMBManager.Instance.LoginAsyncAsStream(player).Subscribe(user => _noticeLogin.OnNext(Unit.Default),
+                exception =>
+                {
+                    Debug.LogWarning(exception);
+                    NCMBManager.Instance.SignUp(player)
+                        .Subscribe(user => _noticeLogin.OnNext(Unit.Default), Debug.LogError);
+                });
         }
     }
 }
