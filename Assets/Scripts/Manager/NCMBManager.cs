@@ -80,7 +80,8 @@ namespace Manager
         public IObservable<FenyaVO> AttackAndFetchFenyaHp(FenyaVO fenyaVo, int damage)
         {
             var damagedFenya = new FenyaVO(fenyaVo.ObjectId, fenyaVo.RemainHP - damage);
-            return AttackFenyaByPlayer(fenyaVo, damage)
+
+            return AttackFenyaByPlayer(damagedFenya, damage)
                 .Zip(PostFenyaHp(damagedFenya), (ncmb1, ncmb2) => new FenyaVO(ncmb2))
                 .First()
                 .Repeat();

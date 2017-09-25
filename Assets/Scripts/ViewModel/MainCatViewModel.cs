@@ -29,6 +29,11 @@ namespace ViewModel
             Model.OnCLickAttackButton(damage);
         }
 
+        public void OnClickReloadButton()
+        {
+            Model.OnClickReloadButton();
+        }
+
         public MainCatViewModel(MainCat model)
         {
             Model = model;

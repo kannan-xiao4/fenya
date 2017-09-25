@@ -12,5 +12,7 @@ namespace Interface
         IObservable<bool> canAttack { get; }
 
         void OnCLickAttackButton(float damage);
+
+        void OnClickReloadButton();
     }
 }

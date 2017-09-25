@@ -20,6 +20,9 @@ namespace View
         [SerializeField]
         private Button attackButton;
 
+        [SerializeField]
+        private Button reloadButton;
+
         /// <summary>
         /// ViewModelをBind
         /// </summary>
@@ -45,6 +48,11 @@ namespace View
             {
                 var damageHours = float.Parse(playerInputField.text);
                 viewModel.OnCLickAttackButton(damageHours);
+            }).AddTo(this);
+
+            reloadButton.OnClickAsObservable().Subscribe(_ =>
+            {
+                viewModel.OnClickReloadButton();
             }).AddTo(this);
         }
     }

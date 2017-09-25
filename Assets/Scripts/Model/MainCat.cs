@@ -48,6 +48,14 @@ namespace Model
         }
 
         /// <summary>
+        /// リロード処理
+        /// </summary>
+        public void OnClickReloadButton()
+        {
+            NCMBManager.Instance.FetchFenyaObject().Subscribe(obj => fenyaObject.Value = obj);
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public MainCat()
