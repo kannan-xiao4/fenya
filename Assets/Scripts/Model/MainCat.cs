@@ -1,5 +1,5 @@
-﻿using Manager;
-using NCMB;
+﻿using System.Linq;
+using Manager;
 using PageSettings;
 using UniRx;
 using UnityEngine;
@@ -32,12 +32,18 @@ namespace Model
         public ReactiveProperty<TimeSpan> remainTimeAsObservable = new ReactiveProperty<TimeSpan>();
 
         /// <summary>
+        /// 今日攻撃できるか？
+        /// </summary>
+        public ReactiveProperty<bool> canAttackToday = new BoolReactiveProperty(false);
+
+        /// <summary>
         /// 攻撃ボタンを押したときの動作
         /// </summary>
         /// <param name="damage"></param>
         public void OnCLickAttackButton(float damage)
         {
-            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, (int)damage * 1000)
+            canAttackToday.Value = false;
+            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, (int) damage * 1000)
                 .Subscribe(x => fenyaObject.Value = x, Debug.LogError);
         }
 
@@ -47,6 +53,7 @@ namespace Model
         public MainCat()
         {
             viewModel = new MainCatViewModel(this);
+
             NCMBManager.Instance.FetchFenyaObject().Subscribe(obj => fenyaObject.Value = obj);
 
             fenyaObject.Where(x => x != null).Subscribe(obj =>
@@ -64,6 +71,9 @@ namespace Model
             var uiManager = UIManager.Instance;
             uiManager.ReplaceCurrentPage<MainCatSetting>();
             uiManager.GetCurrentView<MainCatView>().Bind(viewModel);
+
+            NCMBManager.Instance.FetchTodayHistory()
+                .Subscribe(list => canAttackToday.Value = list.All(x => x.CreateDate.GetValueOrDefault().Date != DateTime.Today.Date));
         }
     }
 }

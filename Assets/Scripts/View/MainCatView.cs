@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Interface;
 using UniRx;
 using UnityEngine;
@@ -30,6 +29,12 @@ namespace View
             viewModel.remainHp.SubscribeToText(remainHpText).AddTo(this);
 
             viewModel.remainTime.Subscribe(span => remainTimeText.text = string.Format("{0} days", span.Days)).AddTo(this);
+
+            viewModel.canAttack.Subscribe(canAttack =>
+            {
+                playerInputField.interactable = canAttack;
+                attackButton.interactable = canAttack;
+            }).AddTo(this);
 
             playerInputField.OnValueChangedAsObservable().Subscribe(input =>
             {

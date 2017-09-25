@@ -1,4 +1,5 @@
-﻿using NCMB;
+﻿using System.Collections.Generic;
+using NCMB;
 using NcmbAsObservables;
 using UniRx;
 using UnityEngine;
@@ -29,6 +30,18 @@ namespace Manager
                     fenyaVo.UpdateByNCMBList(list);
                     return fenyaVo;
                 });
+        }
+
+        /// <summary>
+        /// 最新の攻撃記録を取得する
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<List<NCMBObject>> FetchTodayHistory()
+        {
+            var historyVo = new AttackHistoryVO(currentUser.UserName);
+
+            return NcmbQueryHelper<NCMBObject>
+                .FindAsync(historyVo.CreateTodayHistoryQuery());
         }
 
         /// <summary>

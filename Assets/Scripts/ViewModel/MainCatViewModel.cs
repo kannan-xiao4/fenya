@@ -17,6 +17,11 @@ namespace ViewModel
             get { return Model.remainTimeAsObservable; }
         }
 
+        public IObservable<bool> canAttack
+        {
+            get { return Model.canAttackToday; }
+        }
+
         private MainCat Model { get; set; }
 
         public void OnCLickAttackButton(float damage)

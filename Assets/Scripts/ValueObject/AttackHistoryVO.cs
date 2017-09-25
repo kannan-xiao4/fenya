@@ -26,6 +26,25 @@ namespace ValueObject
             return obj;
         }
 
+        /// <summary>
+        /// 今日の履歴を取得する
+        /// </summary>
+        /// <returns></returns>
+        public NCMBQuery<NCMBObject> CreateTodayHistoryQuery()
+        {
+            var query = new NCMBQuery<NCMBObject>(HISTORY_CLASS_NAME);
+            query.OrderByAscending("createDate");
+            query.WhereEqualTo(ATTACKER_NAME, attackUserName);
+            query.Limit = 2;
+
+            return query;
+        }
+
+        public AttackHistoryVO(string userName)
+        {
+            attackUserName = userName;
+        }
+        
         public AttackHistoryVO(string userName, FenyaVO fenya, int damage)
         {
             attackUserName = userName;
