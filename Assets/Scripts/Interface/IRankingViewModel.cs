@@ -1,4 +1,4 @@
-﻿using ValueObject;
+﻿using System.Collections.Generic;
 
 namespace Interface
 {
@@ -7,5 +7,10 @@ namespace Interface
     /// </summary>
     public interface IRankingViewModel
     {
+        /// <summary>
+        /// ランキングカードのリスト、表示させたい順番に入っている
+        /// 普通は降順
+        /// </summary>
+        List<IRankingCardViewModel> rankingCardList { get; }
     }
 }
