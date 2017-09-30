@@ -1,4 +1,5 @@
 ﻿using Interface;
+using UniRx;
 using UnityEngine;
 
 namespace View
@@ -20,7 +21,10 @@ namespace View
         /// <param name="viewModel"></param>
         public void Bind(IRankingViewModel viewModel)
         {
-            viewModel.rankingCardList.ForEach(InitializeCardView);
+            viewModel.rankingCardList
+                .Where(x => x != null)
+                .Subscribe(list => list.ForEach(InitializeCardView))
+                .AddTo(this);
         }
 
         /// <summary>

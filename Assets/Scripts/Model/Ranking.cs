@@ -1,5 +1,7 @@
 ﻿using Manager;
 using PageSettings;
+using UniRx;
+using ValueObject;
 using ViewModel;
 
 namespace Model
@@ -7,10 +9,15 @@ namespace Model
     public class Ranking
     {
         private readonly RankingViewModel viewModel;
+        public readonly ReactiveProperty<RankingVO> rankingObject = new ReactiveProperty<RankingVO>();
 
         public Ranking()
         {
             viewModel = new RankingViewModel(this);
+            NCMBManager.Instance.FetchFenyaObject().Subscribe(fenya =>
+            {
+                NCMBManager.Instance.FetchRankingByFenyaVO(fenya).Subscribe(x => rankingObject.Value = x);
+            });
         }
 
         /// <summary>
