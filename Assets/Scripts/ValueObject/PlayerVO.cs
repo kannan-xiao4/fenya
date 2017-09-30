@@ -8,6 +8,7 @@ namespace ValueObject
     {
         public string Name { get; private set; }
         public string Password { get; private set; }
+        public bool IsSelf { get; private set; }
 
         /// <summary>
         /// NCMBUserオブジェクトを取得する
@@ -24,16 +25,18 @@ namespace ValueObject
             return user;
         }
 
-        public PlayerVO(string name)
+        public PlayerVO(string name, bool isSelf)
         {
             Name = name;
             Password = "fenya";
+            IsSelf = isSelf;
         }
         
         public PlayerVO(string name, string password)
         {
             Name = name;
             Password = password;
+            IsSelf = true;
         }
     }
 }

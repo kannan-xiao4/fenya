@@ -17,7 +17,7 @@ namespace Model
         public void OnClickLoginButton(string userName)
         {
             AutoLogin.SaveUserName(userName);
-            Login.LoginByNCMB(new PlayerVO(userName));
+            Login.LoginByNCMB(new PlayerVO(userName, true));
         }
 
         public ManualLogin()

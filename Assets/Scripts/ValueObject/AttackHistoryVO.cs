@@ -88,7 +88,9 @@ namespace ValueObject
         /// <param name="ncmbObject"></param>
         public AttackHistoryVO(NCMBObject ncmbObject)
         {
-            AttackPlayer = new PlayerVO(ncmbObject[ATTACKER_NAME] as string);
+            var attackerName = ncmbObject[ATTACKER_NAME] as string;
+            var isSelf = NCMBUser.CurrentUser.UserName == attackerName;
+            AttackPlayer = new PlayerVO(attackerName, isSelf);
             DamagedFenyaVo = new FenyaVO(ncmbObject[FENYA] as NCMBObject);
             DamageVo = new DamageVO((int)ncmbObject[ATTACK_DAMAGE]);
         }

@@ -170,7 +170,7 @@ namespace Manager
         private static void SetCurrentUser(NCMBUser ncmbUser)
         {
             currentUser = ncmbUser;
-            currentPlayerVo = new PlayerVO(ncmbUser.UserName);
+            currentPlayerVo = new PlayerVO(ncmbUser.UserName, true); //自信なのでTrue
         }
     }
 }

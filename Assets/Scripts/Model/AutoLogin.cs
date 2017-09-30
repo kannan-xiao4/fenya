@@ -47,7 +47,7 @@ namespace Model
         {
             if(!CanAutoLogin()) return;
             
-            Login.LoginByNCMB(new PlayerVO(LoadLoginName()));
+            Login.LoginByNCMB(new PlayerVO(LoadLoginName(), true));
         }
 
         /// <summary>
