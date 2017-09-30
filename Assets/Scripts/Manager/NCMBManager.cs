@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NCMB;
 using NcmbAsObservables;
 using UniRx;
@@ -14,6 +15,7 @@ namespace Manager
     public class NCMBManager : SingletonMonoBehaviour<NCMBManager>
     {
         private static NCMBUser currentUser;
+        private static PlayerVO currentPlayerVo;
 
         /// <summary>
         /// 最新の有効なFenya情報取得する
@@ -38,10 +40,24 @@ namespace Manager
         /// <returns></returns>
         public IObservable<List<NCMBObject>> FetchTodayHistory()
         {
-            var historyVo = new AttackHistoryVO(currentUser.UserName);
+            var historyVo = new AttackHistoryVO(currentPlayerVo);
 
             return NcmbQueryHelper<NCMBObject>
                 .FindAsync(historyVo.CreateTodayHistoryQuery());
+        }
+
+        /// <summary>
+        /// 対象のFenyaへの攻撃履歴一覧を取得する
+        /// </summary>
+        /// <param name="fenyaVo">ランキングを取りたい対象のFenyaVO</param>
+        /// <returns></returns>
+        public IObservable<IEnumerable<AttackHistoryVO>> FetchAttackHistoryByFenyaVO(FenyaVO fenyaVo)
+        {
+            var rankingVo = new AttackHistoryVO(fenyaVo);
+
+            return NcmbQueryHelper<NCMBObject>
+                .FindAsync(rankingVo.CreateAttackHistoryQueryByFenyaVO())
+                .Select(list => list.Select(ncmbObject => new AttackHistoryVO(ncmbObject)));
         }
 
         /// <summary>
@@ -50,9 +66,9 @@ namespace Manager
         /// <param name="fenyaVo"></param>
         /// <param name="damage"></param>
         /// <returns></returns>
-        public IObservable<NCMBObject> AttackFenyaByPlayer(FenyaVO fenyaVo, int damage)
+        public IObservable<NCMBObject> AttackFenyaByPlayer(FenyaVO fenyaVo, DamageVO damage)
         {
-            var historyVo = new AttackHistoryVO(currentUser.UserName, fenyaVo, damage);
+            var historyVo = new AttackHistoryVO(currentPlayerVo, fenyaVo, damage);
             var historyObject = historyVo.CreateNcmbObject();
 
             return historyObject.SaveAsyncAsStream();
@@ -77,9 +93,9 @@ namespace Manager
         /// <param name="fenyaVo"></param>
         /// <param name="damage"></param>
         /// <returns>だめーじを受けたFenyaVO</returns>
-        public IObservable<FenyaVO> AttackAndFetchFenyaHp(FenyaVO fenyaVo, int damage)
+        public IObservable<FenyaVO> AttackAndFetchFenyaHp(FenyaVO fenyaVo, DamageVO damage)
         {
-            var damagedFenya = new FenyaVO(fenyaVo.ObjectId, fenyaVo.RemainHP - damage);
+            var damagedFenya = new FenyaVO(fenyaVo.ObjectId, fenyaVo.RemainHP - damage.Amount);
 
             return AttackFenyaByPlayer(damagedFenya, damage)
                 .Zip(PostFenyaHp(damagedFenya), (ncmb1, ncmb2) => new FenyaVO(ncmb2))
@@ -95,7 +111,7 @@ namespace Manager
         {
             var userObject = playerVo.CreateNcmbUser();
 
-            return userObject.SingUpAsyncAsStream().Do(user => currentUser = user);
+            return userObject.SingUpAsyncAsStream().Do(SetCurrentUser);
         }
 
         /// <summary>
@@ -104,10 +120,10 @@ namespace Manager
         /// <param name="playerVo"></param>
         public void Login(PlayerVO playerVo)
         {
-            NCMBUser.LogInAsync(playerVo.UserName, playerVo.Password, error =>
+            NCMBUser.LogInAsync(playerVo.Name, playerVo.Password, error =>
             {
                 if (error != null) Debug.LogError(error);
-                currentUser = NCMBUser.CurrentUser;
+                SetCurrentUser(NCMBUser.CurrentUser);
             });
         }
 
@@ -119,14 +135,14 @@ namespace Manager
             {
                 var gate = new object();
                 var isDisposed = false;
-                NCMBUser.LogInAsync(playerVo.UserName, playerVo.Password, error =>
+                NCMBUser.LogInAsync(playerVo.Name, playerVo.Password, error =>
                 {
                     lock (gate)
                     {
                         if (isDisposed) return;
                         if (error == null)
                         {
-                            currentUser = user;
+                            SetCurrentUser(user);
                             observer.OnNext(user);
                             observer.OnCompleted();
                         }
@@ -144,6 +160,16 @@ namespace Manager
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// 現在のユーザーを更新する
+        /// </summary>
+        /// <param name="ncmbUser"></param>
+        private static void SetCurrentUser(NCMBUser ncmbUser)
+        {
+            currentUser = ncmbUser;
+            currentPlayerVo = new PlayerVO(ncmbUser.UserName);
         }
     }
 }
