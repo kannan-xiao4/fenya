@@ -2,9 +2,9 @@
 {
     public class DamageVO
     {
-        public int Amount { get; private set; }
+        public long Amount { get; private set; }
 
-        public DamageVO(int amount)
+        public DamageVO(long amount)
         {
             Amount = amount;
         }

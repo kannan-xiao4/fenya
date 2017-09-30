@@ -27,7 +27,7 @@ namespace ViewModel
         /// <returns></returns>
         private IObservable<List<IRankingCardViewModel>> ObservableRankingVo()
         {
-            return Model.rankingObject.Select(CreateRankingCardByRankingVo);
+            return Model.rankingObject.Where(x => x != null).Select(CreateRankingCardByRankingVo);
         }
 
         /// <summary>

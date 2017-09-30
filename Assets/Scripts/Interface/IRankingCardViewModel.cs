@@ -18,7 +18,7 @@
         /// <summary>
         /// 総与ダメージ
         /// </summary>
-        int TotalDamage { get; }
+        long TotalDamage { get; }
 
         /// <summary>
         /// 自分のカードか？

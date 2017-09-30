@@ -45,7 +45,8 @@ namespace ValueObject
         public NCMBQuery<NCMBObject> CreateAttackHistoryQueryByFenyaVO()
         {
             var query = new NCMBQuery<NCMBObject>(HISTORY_CLASS_NAME);
-            query.WhereEqualTo(FENYA, DamagedFenyaVo);
+            query.WhereEqualTo(FENYA, DamagedFenyaVo.CreateNcmbObject());
+            query.Include(FENYA);
 
             return query;
         }
@@ -92,7 +93,7 @@ namespace ValueObject
             var isSelf = NCMBUser.CurrentUser.UserName == attackerName;
             AttackPlayer = new PlayerVO(attackerName, isSelf);
             DamagedFenyaVo = new FenyaVO(ncmbObject[FENYA] as NCMBObject);
-            DamageVo = new DamageVO((int)ncmbObject[ATTACK_DAMAGE]);
+            DamageVo = new DamageVO((long)ncmbObject[ATTACK_DAMAGE]);
         }
     }
 }

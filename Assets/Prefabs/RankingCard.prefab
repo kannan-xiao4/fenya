@@ -252,7 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rankText: {fileID: 114836589460800430}
   playerNameText: {fileID: 114550472789015032}
-  totalDamageText: {fileID: 114221453724474216}
+  totalDamageText: {fileID: 114638360938967962}
 --- !u!114 &114816353731414808
 MonoBehaviour:
   m_ObjectHideFlags: 1

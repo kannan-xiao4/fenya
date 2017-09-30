@@ -58,6 +58,7 @@ namespace Manager
             return NcmbQueryHelper<NCMBObject>
                 .FindAsync(historyVo.CreateAttackHistoryQueryByFenyaVO())
                 .Select(ncmbList => ncmbList.Select(ncmbObject => new AttackHistoryVO(ncmbObject)))
+                .Where(list => list.Any())
                 .Select(historyList => new RankingVO(historyList.ToList()));
         }
 

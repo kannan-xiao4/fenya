@@ -10,7 +10,7 @@ namespace ViewModel
     {
         public int Rank { get; private set; }
         public string Name { get; private set; }
-        public int TotalDamage { get; private set; }
+        public long TotalDamage { get; private set; }
         public bool IsSelf { get; private set; }
 
         public RankingCardViewModel(int rank, PlayerVO playerVo, DamageVO damageVo)

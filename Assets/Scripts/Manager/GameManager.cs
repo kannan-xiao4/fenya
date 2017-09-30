@@ -16,16 +16,25 @@ namespace Manager
         /// </summary>
         private void ProcessLogin()
         {
-            Login.LoginSuccessAsObservable().Subscribe(_ => ProcessMainCat());
+            Login.LoginSuccessAsObservable().Subscribe(_ => ProcessRanking());
             Login.Process();
         }
 
         /// <summary>
-        /// モデルを作成して表示する
+        /// MainCatモデルを作成して表示する
         /// </summary>
         private void ProcessMainCat()
         {
             var model = new MainCat();
+            model.Show();
+        }
+
+        /// <summary>
+        /// Rankingモデルを作成して表示する
+        /// </summary>
+        private void ProcessRanking()
+        {
+            var model = new Ranking();
             model.Show();
         }
     }
