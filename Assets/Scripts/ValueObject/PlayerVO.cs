@@ -6,7 +6,7 @@ namespace ValueObject
 {
     public class PlayerVO
     {
-        public string UserName { get; private set; }
+        public string Name { get; private set; }
         public string Password { get; private set; }
 
         /// <summary>
@@ -17,22 +17,22 @@ namespace ValueObject
         {
             var user = new NCMBUser
             {
-                UserName = UserName,
+                UserName = Name,
                 Password = Password
             };
 
             return user;
         }
 
-        public PlayerVO(string userName)
+        public PlayerVO(string name)
         {
-            UserName = userName;
+            Name = name;
             Password = "fenya";
         }
         
-        public PlayerVO(string userName, string password)
+        public PlayerVO(string name, string password)
         {
-            UserName = userName;
+            Name = name;
             Password = password;
         }
     }

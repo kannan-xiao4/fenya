@@ -39,11 +39,11 @@ namespace Model
         /// <summary>
         /// 攻撃ボタンを押したときの動作
         /// </summary>
-        /// <param name="damage"></param>
-        public void OnCLickAttackButton(float damage)
+        /// <param name="overWorkHours"></param>
+        public void OnCLickAttackButton(float overWorkHours)
         {
             canAttackToday.Value = false;
-            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, (int) damage * 1000)
+            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, new DamageVO((int) overWorkHours * 1000))
                 .Subscribe(x => fenyaObject.Value = x, Debug.LogError);
         }
 
