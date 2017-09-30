@@ -21,6 +21,7 @@ namespace PageSettings
         public void InstantiatePage(Transform parent)
         {
             instance = Instantiate(pagePrefab, parent);
+            BindLoadModel();
         }
 
         /// <summary>
@@ -47,6 +48,6 @@ namespace PageSettings
         /// <summary>
         /// 読み込んだモデルを遷移先ページに渡します。
         /// </summary>
-        public abstract void BindLoadedModels();
+        internal abstract void BindLoadModel();
     }
 }

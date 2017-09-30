@@ -1,12 +1,20 @@
-﻿using UnityEngine;
+﻿using Interface;
+using View;
 
 namespace PageSettings
 {
-    [CreateAssetMenu]
     public class MainCatSetting : PageSetting
     {
-        public override void BindLoadedModels()
+        private IMainCatViewModel viewModel;
+
+        internal override void BindLoadModel()
         {
+            Instance.GetComponent<MainCatView>().Bind(viewModel);
+        }
+
+        public void Bind(IMainCatViewModel viewModel)
+        {
+            this.viewModel = viewModel;
         }
     }
 }

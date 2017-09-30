@@ -77,8 +77,9 @@ namespace Model
         public void Show()
         {
             var uiManager = UIManager.Instance;
+            var pageSetting = uiManager.GetPageSetting<MainCatSetting>();
+            pageSetting.Bind(viewModel);
             uiManager.ReplaceCurrentPage<MainCatSetting>();
-            uiManager.GetCurrentView<MainCatView>().Bind(viewModel);
 
             NCMBManager.Instance.FetchTodayHistory()
                 .Subscribe(list => canAttackToday.Value = list.All(x => x.CreateDate.GetValueOrDefault().Date != DateTime.Today.Date));

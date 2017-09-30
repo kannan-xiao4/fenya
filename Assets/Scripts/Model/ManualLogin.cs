@@ -31,8 +31,9 @@ namespace Model
         public void Show()
         {
             var uiManager = UIManager.Instance;
-            uiManager.InstancePage<LoginSetting>();
-            uiManager.GetCurrentView<LoginView>().Bind(viewModel);
+            var pageSetting = uiManager.GetPageSetting<LoginSetting>();
+            pageSetting.Bind(viewModel);
+            uiManager.ReplaceCurrentPage<LoginSetting>();
         }
     }
 }

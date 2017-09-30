@@ -13,7 +13,7 @@ namespace Manager
     {
         [SerializeField]
         private Transform pageLayer;
-        
+
         [SerializeField]
         private List<PageSetting> pageSettings;
 
@@ -34,7 +34,7 @@ namespace Manager
         /// </summary>
         public void DeleteCurrentPage()
         {
-            if(currentPageSetting == null) return;
+            if (currentPageSetting == null) return;
             currentPageSetting.DeletePage();
         }
 
@@ -56,23 +56,13 @@ namespace Manager
             DeleteCurrentPage();
             InstancePage<T>();
         }
-        
-        /// <summary>
-        /// PageのViewを返す
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T GetCurrentView<T>()
-        {
-            return currentPageSetting.GetPageView<T>();
-        }
-        
+
         /// <summary>
         /// 指定のPageSettingを取得する
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        private T GetPageSetting<T>() where T : PageSetting
+        public T GetPageSetting<T>() where T : PageSetting
         {
             return (T) pageSettings.First(setting => setting.GetType() == typeof(T));
         }
