@@ -51,13 +51,14 @@ namespace Manager
         /// </summary>
         /// <param name="fenyaVo">ランキングを取りたい対象のFenyaVO</param>
         /// <returns></returns>
-        public IObservable<IEnumerable<AttackHistoryVO>> FetchAttackHistoryByFenyaVO(FenyaVO fenyaVo)
+        public IObservable<RankingVO> FetchRankingByFenyaVO(FenyaVO fenyaVo)
         {
-            var rankingVo = new AttackHistoryVO(fenyaVo);
+            var historyVo = new AttackHistoryVO(fenyaVo);
 
             return NcmbQueryHelper<NCMBObject>
-                .FindAsync(rankingVo.CreateAttackHistoryQueryByFenyaVO())
-                .Select(list => list.Select(ncmbObject => new AttackHistoryVO(ncmbObject)));
+                .FindAsync(historyVo.CreateAttackHistoryQueryByFenyaVO())
+                .Select(ncmbList => ncmbList.Select(ncmbObject => new AttackHistoryVO(ncmbObject)))
+                .Select(historyList => new RankingVO(historyList.ToList()));
         }
 
         /// <summary>

@@ -3,20 +3,20 @@ using System.Linq;
 
 namespace ValueObject
 {
+    /// <summary>
+    /// 攻撃者ランキングのVo
+    /// </summary>
     public class RankingVO
     {
-        private List<AttackHistoryVO> historyData;
-
+        private readonly List<AttackHistoryVO> historyData;
+        public FenyaVO TargetFenya;
         public Dictionary<PlayerVO, DamageVO> Ranking;
 
         /// <summary>
         /// AttackVOのリストからランキングを作成する
         /// </summary>
-        /// <param name="list"></param>
-        public void MakeRanking(List<AttackHistoryVO> list)
+        private void MakeRanking()
         {
-            historyData = list;
-            
             Ranking = new Dictionary<PlayerVO, DamageVO>();
             
             foreach (var pair in historyData.Select(x => x.AttackPlayer).Select(TotalDamage).OrderByDescending(x => x.Value))
@@ -35,6 +35,13 @@ namespace ValueObject
             var totalDamage = historyData.Where(x => x.AttackPlayer.Equals(user)).Sum(x => x.DamageVo.Amount);
             
             return new KeyValuePair<PlayerVO, DamageVO>(user, new DamageVO(totalDamage));
+        }
+
+        public RankingVO(List<AttackHistoryVO> historyData)
+        {
+            TargetFenya = historyData.First().DamagedFenyaVo;
+            this.historyData = historyData;
+            MakeRanking();
         }
     }
 }
