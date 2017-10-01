@@ -10,6 +10,11 @@ namespace Manager
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         /// <summary>
+        /// TitleModel
+        /// </summary>
+        private Title title;
+
+        /// <summary>
         /// FenyaModel
         /// </summary>
         private MainCat mainCat;
@@ -32,8 +37,21 @@ namespace Manager
         /// </summary>
         private void ProcessLogin()
         {
-            Login.LoginSuccessAsObservable().Subscribe(_ => ShowRanking());
+            Login.LoginSuccessAsObservable().Subscribe(_ => ShowTitle());
             Login.Process();
+        }
+
+        /// <summary>
+        /// Titleモデルを作成して表示する
+        /// </summary>
+        public void ShowTitle()
+        {
+            if (title == null)
+            {
+                title = new Title();
+            }
+
+            title.Show();
         }
 
         /// <summary>

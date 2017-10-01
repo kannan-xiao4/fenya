@@ -18,7 +18,7 @@ namespace Manager
         /// <summary>
         /// 現在ログインしているPlayer
         /// </summary>
-        private static PlayerVO currentPlayerVo;
+        public static PlayerVO currentPlayerVo;
 
         /// <summary>
         /// 最新の有効なFenya情報取得する

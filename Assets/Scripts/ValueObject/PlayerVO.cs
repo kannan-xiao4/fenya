@@ -1,6 +1,4 @@
-﻿using NcmbAsObservables;
-using NCMB;
-using UniRx;
+﻿using NCMB;
 
 namespace ValueObject
 {
@@ -51,6 +49,24 @@ namespace ValueObject
             Name = name;
             Password = password;
             IsSelf = true;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        } 
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as PlayerVO;
+            if (p == null)
+                return false;
+            return Name == p.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

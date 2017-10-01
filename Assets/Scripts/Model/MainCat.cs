@@ -62,6 +62,14 @@ namespace Model
         }
 
         /// <summary>
+        /// ランキングページを表示する
+        /// </summary>
+        public void ShowRankingPage()
+        {
+            GameManager.Instance.ShowRanking();
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public MainCat()
@@ -88,7 +96,8 @@ namespace Model
             uiManager.ReplaceCurrentPage<MainCatSetting>();
 
             NCMBManager.Instance.FetchTodayHistory()
-                .Subscribe(list => canAttackToday.Value = list.All(x => x.CreateDate.GetValueOrDefault().Date != DateTime.Today.Date));
+                .Subscribe(list =>
+                    canAttackToday.Value = list.All(x => x.CreateDate.GetValueOrDefault().Date != DateTime.Today.Date));
         }
     }
 }

@@ -57,6 +57,14 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// ランキングへの遷移
+        /// </summary>
+        public void OnClickRankingButton()
+        {
+            Model.ShowRankingPage();
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="model"></param>

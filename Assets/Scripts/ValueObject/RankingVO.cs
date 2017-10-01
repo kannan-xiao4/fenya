@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ValueObject
 {
@@ -18,11 +19,14 @@ namespace ValueObject
         private void MakeRanking()
         {
             Ranking = new Dictionary<PlayerVO, DamageVO>();
-            
-            foreach (var pair in historyData.Select(x => x.AttackPlayer).Select(TotalDamage).OrderByDescending(x => x.Value))
-            {
-                Ranking.Add(pair.Key, pair.Value);
-            }
+
+            Ranking = historyData
+                .Select(x => x.AttackPlayer) //Player抽出
+                .Select(TotalDamage) //PlayerとHistoryDataから各プレイヤーの総合ダメージ算出
+                .GroupBy(x => x.Key) //Playerでグループ分け
+                .Select(x => x.First()) //そのうちの一つを取得（重複削除）
+                .OrderByDescending(x => x.Value.Amount) //ダメージの降順で並べ替え
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         /// <summary>
