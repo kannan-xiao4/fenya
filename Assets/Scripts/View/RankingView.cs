@@ -1,6 +1,7 @@
 ﻿using Interface;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace View
 {
@@ -15,6 +16,9 @@ namespace View
         [SerializeField]
         private Transform rankingCardParent;
 
+        [SerializeField]
+        private Button fenyaPageButton;
+
         /// <summary>
         /// ViewModelをBind
         /// </summary>
@@ -25,6 +29,8 @@ namespace View
                 .Where(x => x != null)
                 .Subscribe(list => list.ForEach(InitializeCardView))
                 .AddTo(this);
+
+            fenyaPageButton.OnClickAsObservable().Subscribe(_ => viewModel.OnClickFenyaButton()).AddTo(this);
         }
 
         /// <summary>

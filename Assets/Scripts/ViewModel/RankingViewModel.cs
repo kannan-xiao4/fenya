@@ -9,11 +9,25 @@ namespace ViewModel
 {
     public class RankingViewModel : IRankingViewModel
     {
+        /// <summary>
+        /// ランキングModel
+        /// </summary>
         private readonly Ranking Model;
 
+        /// <summary>
+        /// ランキングカードViewModelのList
+        /// </summary>
         public IObservable<List<IRankingCardViewModel>> rankingCardList
         {
             get { return ObservableRankingVo(); }
+        }
+
+        /// <summary>
+        /// FenyaPageへの遷移する
+        /// </summary>
+        public void OnClickFenyaButton()
+        {
+            Model.ShowFenyaPage();
         }
 
         public RankingViewModel(Ranking model)

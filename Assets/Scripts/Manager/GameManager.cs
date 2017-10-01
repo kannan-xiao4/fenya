@@ -6,6 +6,9 @@ namespace Manager
 {
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
+        private MainCat mainCat;
+        private Ranking ranking;
+
         private void Start()
         {
             ProcessLogin();
@@ -16,26 +19,34 @@ namespace Manager
         /// </summary>
         private void ProcessLogin()
         {
-            Login.LoginSuccessAsObservable().Subscribe(_ => ProcessRanking());
+            Login.LoginSuccessAsObservable().Subscribe(_ => ShowRanking());
             Login.Process();
         }
 
         /// <summary>
         /// MainCatモデルを作成して表示する
         /// </summary>
-        private void ProcessMainCat()
+        public void ShowMainCat()
         {
-            var model = new MainCat();
-            model.Show();
+            if (mainCat == null)
+            {
+                mainCat = new MainCat();
+            }
+
+            mainCat.Show();
         }
 
         /// <summary>
         /// Rankingモデルを作成して表示する
         /// </summary>
-        private void ProcessRanking()
+        public void ShowRanking()
         {
-            var model = new Ranking();
-            model.Show();
+            if (ranking == null)
+            {
+                ranking = new Ranking();
+            }
+
+            ranking.Show();
         }
     }
 }

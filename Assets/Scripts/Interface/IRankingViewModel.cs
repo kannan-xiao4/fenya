@@ -13,5 +13,10 @@ namespace Interface
         /// 普通は降順
         /// </summary>
         IObservable<List<IRankingCardViewModel>> rankingCardList { get; }
+
+        /// <summary>
+        /// Fenyaページに遷移する
+        /// </summary>
+        void OnClickFenyaButton();
     }
 }

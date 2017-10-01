@@ -11,6 +11,14 @@ namespace Model
         private readonly RankingViewModel viewModel;
         public readonly ReactiveProperty<RankingVO> rankingObject = new ReactiveProperty<RankingVO>();
 
+        /// <summary>
+        /// FenyaPageを表示する
+        /// </summary>
+        public void ShowFenyaPage()
+        {
+            GameManager.Instance.ShowMainCat();
+        }
+
         public Ranking()
         {
             viewModel = new RankingViewModel(this);
