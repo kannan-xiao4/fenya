@@ -2,15 +2,19 @@
 
 namespace ValueObject
 {
+    /// <summary>
+    /// 対象のFenyaへの攻撃履歴のVO
+    /// </summary>
     public class AttackHistoryVO
     {
         private const string HISTORY_CLASS_NAME = "AttackHistory";
         private const string ATTACKER_NAME = "AttackerName";
         private const string ATTACK_DAMAGE = "AttackDamage";
+        private const string FENYA = "Fenya";
 
-        private readonly string attackUserName;
-        private readonly FenyaVO DamagedFenyaVo;
-        private readonly int Damage;
+        public readonly PlayerVO AttackPlayer;
+        public readonly FenyaVO DamagedFenyaVo;
+        public readonly DamageVO DamageVo;
 
         /// <summary>
         /// 現在の値からNCMBObjectを生成する
@@ -19,8 +23,8 @@ namespace ValueObject
         public NCMBObject CreateNcmbObject()
         {
             var obj = new NCMBObject(HISTORY_CLASS_NAME);
-            obj[ATTACKER_NAME] = attackUserName;
-            obj[ATTACK_DAMAGE] = Damage;
+            obj[ATTACKER_NAME] = AttackPlayer.Name;
+            obj[ATTACK_DAMAGE] = DamageVo.Amount;
             obj.Add(FenyaVO.FENYA_CLASS_NAME, DamagedFenyaVo.CreateNcmbObject());
 
             return obj;
@@ -30,26 +34,75 @@ namespace ValueObject
         /// 今日の履歴を取得する
         /// </summary>
         /// <returns></returns>
+        /// <remarks>攻撃者の名前必須</remarks>>
         public NCMBQuery<NCMBObject> CreateTodayHistoryQuery()
         {
             var query = new NCMBQuery<NCMBObject>(HISTORY_CLASS_NAME);
             query.OrderByAscending("createDate");
-            query.WhereEqualTo(ATTACKER_NAME, attackUserName);
-            query.Limit = 2;
+            query.WhereEqualTo(ATTACKER_NAME, AttackPlayer.Name);
+            query.Limit = 5;
 
             return query;
         }
 
-        public AttackHistoryVO(string userName)
+        /// <summary>
+        /// 設定されているFenyaVOへの攻撃履歴を取得するためのクエリを作成する
+        /// </summary>
+        /// <returns></returns>
+        public NCMBQuery<NCMBObject> CreateAttackHistoryQueryByFenyaVO()
         {
-            attackUserName = userName;
+            var query = new NCMBQuery<NCMBObject>(HISTORY_CLASS_NAME);
+            query.WhereEqualTo(FENYA, DamagedFenyaVo.CreateNcmbObject());
+            query.Include(FENYA);
+
+            return query;
         }
-        
-        public AttackHistoryVO(string userName, FenyaVO fenya, int damage)
+
+        /// <summary>
+        /// ユーザー名を指定して取得する
+        /// 特定のユーザーの過去の攻撃履歴を取得する際に使う
+        /// </summary>
+        /// <param name="player"></param>
+        public AttackHistoryVO(PlayerVO player)
         {
-            attackUserName = userName;
+            AttackPlayer = player;
+        }
+
+        /// <summary>
+        /// FenyaVO を指定して取得する
+        /// 特定のFenyaへの攻撃履歴すべてを取得する際に使う
+        /// </summary>
+        /// <param name="fenya"></param>
+        public AttackHistoryVO(FenyaVO fenya)
+        {
             DamagedFenyaVo = fenya;
-            Damage = damage;
+        }
+
+        /// <summary>
+        /// すべて指定して作成
+        /// 更新時に使用
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="fenya"></param>
+        /// <param name="damage"></param>
+        public AttackHistoryVO(PlayerVO player, FenyaVO fenya, DamageVO damage)
+        {
+            AttackPlayer = player;
+            DamagedFenyaVo = fenya;
+            DamageVo = damage;
+        }
+
+        /// <summary>
+        /// クエリで取得したものから作成
+        /// </summary>
+        /// <param name="ncmbObject"></param>
+        public AttackHistoryVO(NCMBObject ncmbObject)
+        {
+            var attackerName = ncmbObject[ATTACKER_NAME] as string;
+            var isSelf = NCMBUser.CurrentUser.UserName == attackerName;
+            AttackPlayer = new PlayerVO(attackerName, isSelf);
+            DamagedFenyaVo = new FenyaVO(ncmbObject[FENYA] as NCMBObject);
+            DamageVo = new DamageVO((long)ncmbObject[ATTACK_DAMAGE]);
         }
     }
 }

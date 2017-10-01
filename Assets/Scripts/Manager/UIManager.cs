@@ -11,12 +11,22 @@ namespace Manager
     /// </summary>
     public class UIManager : SingletonMonoBehaviour<UIManager>
     {
+        /// <summary>
+        /// Pageを生成する親のTransform
+        /// </summary>
         [SerializeField]
         private Transform pageLayer;
-        
+
+        /// <summary>
+        /// PageSettingのList
+        /// Unity上からScriptableObjectを設定する
+        /// </summary>
         [SerializeField]
         private List<PageSetting> pageSettings;
 
+        /// <summary>
+        /// 現在表示しているPageのSetting
+        /// </summary>
         private PageSetting currentPageSetting;
 
         /// <summary>
@@ -34,7 +44,7 @@ namespace Manager
         /// </summary>
         public void DeleteCurrentPage()
         {
-            if(currentPageSetting == null) return;
+            if (currentPageSetting == null) return;
             currentPageSetting.DeletePage();
         }
 
@@ -56,23 +66,13 @@ namespace Manager
             DeleteCurrentPage();
             InstancePage<T>();
         }
-        
-        /// <summary>
-        /// PageのViewを返す
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T GetCurrentView<T>()
-        {
-            return currentPageSetting.GetPageView<T>();
-        }
-        
+
         /// <summary>
         /// 指定のPageSettingを取得する
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        private T GetPageSetting<T>() where T : PageSetting
+        public T GetPageSetting<T>() where T : PageSetting
         {
             return (T) pageSettings.First(setting => setting.GetType() == typeof(T));
         }

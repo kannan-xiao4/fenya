@@ -4,28 +4,28 @@ using View;
 namespace PageSettings
 {
     /// <summary>
-    /// ログインページの設定
+    /// ランキングページの設定
     /// </summary>
-    public class LoginSetting : PageSetting
+    public class RankingSetting : PageSetting
     {
         /// <summary>
         /// ViewModelを保持
         /// </summary>
-        private ILoginViewModel viewModel;
+        private IRankingViewModel viewModel;
 
         /// <summary>
         /// ViewにViewModelをBind
         /// </summary>
         internal override void BindLoadModel()
         {
-            Instance.GetComponent<LoginView>().Bind(viewModel);
+            Instance.GetComponent<RankingView>().Bind(viewModel);
         }
 
         /// <summary>
         /// SettingにViewModelをBind
         /// </summary>
         /// <param name="viewModel"></param>
-        public void Bind(ILoginViewModel viewModel)
+        public void Bind(IRankingViewModel viewModel)
         {
             this.viewModel = viewModel;
         }

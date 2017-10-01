@@ -4,10 +4,14 @@ using UniRx;
 
 namespace ValueObject
 {
+    /// <summary>
+    /// プレイヤー情報を扱うVO
+    /// </summary>
     public class PlayerVO
     {
-        public string UserName { get; private set; }
+        public string Name { get; private set; }
         public string Password { get; private set; }
+        public bool IsSelf { get; private set; }
 
         /// <summary>
         /// NCMBUserオブジェクトを取得する
@@ -17,23 +21,36 @@ namespace ValueObject
         {
             var user = new NCMBUser
             {
-                UserName = UserName,
+                UserName = Name,
                 Password = Password
             };
 
             return user;
         }
 
-        public PlayerVO(string userName)
+        /// <summary>
+        /// 名前と自分かどうかを指定して作成
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="isSelf"></param>
+        public PlayerVO(string name, bool isSelf)
         {
-            UserName = userName;
+            Name = name;
             Password = "fenya";
+            IsSelf = isSelf;
         }
-        
-        public PlayerVO(string userName, string password)
+
+        /// <summary>
+        /// プレイヤー名とパスワードからVO作成
+        /// これがわかってるのは自分だけなのでIsSelf = true
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        public PlayerVO(string name, string password)
         {
-            UserName = userName;
+            Name = name;
             Password = password;
+            IsSelf = true;
         }
     }
 }

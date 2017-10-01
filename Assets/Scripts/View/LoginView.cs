@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace View
 {
     /// <summary>
-    /// 
+    /// ログイン画面View
     /// </summary>
     public class LoginView : MonoBehaviour
     {
@@ -16,6 +16,10 @@ namespace View
         [SerializeField]
         private Button _loginButton;
 
+        /// <summary>
+        /// ViewModelをBind
+        /// </summary>
+        /// <param name="viewModel"></param>
         public void Bind(ILoginViewModel viewModel)
         {
             _loginButton.OnClickAsObservable().Subscribe(_ =>

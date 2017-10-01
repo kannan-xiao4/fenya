@@ -17,8 +17,14 @@ namespace Model
     /// </summary>
     public class MainCat
     {
+        /// <summary>
+        /// 画面を表示するためのViewModel
+        /// </summary>
         private readonly MainCatViewModel viewModel;
 
+        /// <summary>
+        /// 表示の対象となるFenyaVO
+        /// </summary>
         private readonly ReactiveProperty<FenyaVO> fenyaObject = new ReactiveProperty<FenyaVO>();
 
         /// <summary>
@@ -39,11 +45,11 @@ namespace Model
         /// <summary>
         /// 攻撃ボタンを押したときの動作
         /// </summary>
-        /// <param name="damage"></param>
-        public void OnCLickAttackButton(float damage)
+        /// <param name="overWorkHours"></param>
+        public void OnCLickAttackButton(float overWorkHours)
         {
             canAttackToday.Value = false;
-            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, (int) damage * 1000)
+            NCMBManager.Instance.AttackAndFetchFenyaHp(fenyaObject.Value, new DamageVO((int) overWorkHours * 1000))
                 .Subscribe(x => fenyaObject.Value = x, Debug.LogError);
         }
 
@@ -77,8 +83,9 @@ namespace Model
         public void Show()
         {
             var uiManager = UIManager.Instance;
+            var pageSetting = uiManager.GetPageSetting<MainCatSetting>();
+            pageSetting.Bind(viewModel);
             uiManager.ReplaceCurrentPage<MainCatSetting>();
-            uiManager.GetCurrentView<MainCatView>().Bind(viewModel);
 
             NCMBManager.Instance.FetchTodayHistory()
                 .Subscribe(list => canAttackToday.Value = list.All(x => x.CreateDate.GetValueOrDefault().Date != DateTime.Today.Date));
