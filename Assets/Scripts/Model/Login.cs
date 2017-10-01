@@ -14,6 +14,9 @@ namespace Model
     /// </summary>
     public static class Login
     {
+        /// <summary>
+        /// ログインが行えたかどうかを通知するSubject
+        /// </summary>
         private static readonly Subject<Unit> _noticeLogin = new Subject<Unit>();
 
         /// <summary>

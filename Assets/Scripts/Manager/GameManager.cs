@@ -4,11 +4,24 @@ using Utility;
 
 namespace Manager
 {
+    /// <summary>
+    /// ゲーム全体を管理するクラス
+    /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
+        /// <summary>
+        /// FenyaModel
+        /// </summary>
         private MainCat mainCat;
+
+        /// <summary>
+        /// RankingModel
+        /// </summary>
         private Ranking ranking;
 
+        /// <summary>
+        /// 初期処理
+        /// </summary>
         private void Start()
         {
             ProcessLogin();

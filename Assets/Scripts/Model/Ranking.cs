@@ -6,9 +6,19 @@ using ViewModel;
 
 namespace Model
 {
+    /// <summary>
+    /// ランキングモデル
+    /// </summary>
     public class Ranking
     {
+        /// <summary>
+        /// ランキング表示のためのViewModel
+        /// </summary>
         private readonly RankingViewModel viewModel;
+
+        /// <summary>
+        /// ランキングVoを購読
+        /// </summary>
         public readonly ReactiveProperty<RankingVO> rankingObject = new ReactiveProperty<RankingVO>();
 
         /// <summary>
@@ -19,6 +29,10 @@ namespace Model
             GameManager.Instance.ShowMainCat();
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// ToDo:現在のFenyaをFetchしてRanking表示は無駄、すでに取得済みのFenyaを使いたい
+        /// </summary>
         public Ranking()
         {
             viewModel = new RankingViewModel(this);

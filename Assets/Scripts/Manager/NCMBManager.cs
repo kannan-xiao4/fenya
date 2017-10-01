@@ -11,10 +11,13 @@ namespace Manager
 {
     /// <summary>
     /// NCMBとの通信を行うクラス
+    /// ToDO: 責務ごとにクラス分けが必要
     /// </summary>
     public class NCMBManager : SingletonMonoBehaviour<NCMBManager>
     {
-        private static NCMBUser currentUser;
+        /// <summary>
+        /// 現在ログインしているPlayer
+        /// </summary>
         private static PlayerVO currentPlayerVo;
 
         /// <summary>
@@ -129,6 +132,11 @@ namespace Manager
             });
         }
 
+        /// <summary>
+        /// PlayerVOからLogin処理を行うストリーム
+        /// </summary>
+        /// <param name="playerVo"></param>
+        /// <returns></returns>
         public IObservable<NCMBUser> LoginAsyncAsStream(PlayerVO playerVo)
         {
             var user = playerVo.CreateNcmbUser();
@@ -170,7 +178,6 @@ namespace Manager
         /// <param name="ncmbUser"></param>
         private static void SetCurrentUser(NCMBUser ncmbUser)
         {
-            currentUser = ncmbUser;
             currentPlayerVo = new PlayerVO(ncmbUser.UserName, true); //自信なのでTrue
         }
     }

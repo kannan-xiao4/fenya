@@ -7,6 +7,9 @@ using ValueObject;
 
 namespace ViewModel
 {
+    /// <summary>
+    /// ランキング画面表示のためのViewModel
+    /// </summary>
     public class RankingViewModel : IRankingViewModel
     {
         /// <summary>
@@ -30,6 +33,10 @@ namespace ViewModel
             Model.ShowFenyaPage();
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="model"></param>
         public RankingViewModel(Ranking model)
         {
             Model = model;

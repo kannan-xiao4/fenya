@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace View
 {
+    /// <summary>
+    /// Fenya画面のView
+    /// </summary>
     public class MainCatView : MonoBehaviour
     {
         [SerializeField]
@@ -36,6 +39,7 @@ namespace View
             viewModel.canAttack.Subscribe(canAttack =>
             {
                 playerInputField.interactable = canAttack;
+                playerInputField.text = "";
                 attackButton.interactable = canAttack;
             }).AddTo(this);
 
@@ -52,6 +56,7 @@ namespace View
 
             reloadButton.OnClickAsObservable().Subscribe(_ =>
             {
+                playerInputField.text = "";
                 viewModel.OnClickReloadButton();
             }).AddTo(this);
         }

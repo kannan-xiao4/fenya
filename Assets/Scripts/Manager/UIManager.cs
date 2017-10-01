@@ -11,12 +11,22 @@ namespace Manager
     /// </summary>
     public class UIManager : SingletonMonoBehaviour<UIManager>
     {
+        /// <summary>
+        /// Pageを生成する親のTransform
+        /// </summary>
         [SerializeField]
         private Transform pageLayer;
 
+        /// <summary>
+        /// PageSettingのList
+        /// Unity上からScriptableObjectを設定する
+        /// </summary>
         [SerializeField]
         private List<PageSetting> pageSettings;
 
+        /// <summary>
+        /// 現在表示しているPageのSetting
+        /// </summary>
         private PageSetting currentPageSetting;
 
         /// <summary>

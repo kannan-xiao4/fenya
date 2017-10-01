@@ -37,6 +37,11 @@ namespace ValueObject
             return new KeyValuePair<PlayerVO, DamageVO>(user, new DamageVO(totalDamage));
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// AttackHistoryVOListからランキングDictionaryを作成する
+        /// </summary>
+        /// <param name="historyData"></param>
         public RankingVO(List<AttackHistoryVO> historyData)
         {
             TargetFenya = historyData.First().DamagedFenyaVo;

@@ -4,6 +4,9 @@ using UniRx;
 
 namespace ValueObject
 {
+    /// <summary>
+    /// プレイヤー情報を扱うVO
+    /// </summary>
     public class PlayerVO
     {
         public string Name { get; private set; }
@@ -25,13 +28,24 @@ namespace ValueObject
             return user;
         }
 
+        /// <summary>
+        /// 名前と自分かどうかを指定して作成
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="isSelf"></param>
         public PlayerVO(string name, bool isSelf)
         {
             Name = name;
             Password = "fenya";
             IsSelf = isSelf;
         }
-        
+
+        /// <summary>
+        /// プレイヤー名とパスワードからVO作成
+        /// これがわかってるのは自分だけなのでIsSelf = true
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
         public PlayerVO(string name, string password)
         {
             Name = name;

@@ -17,8 +17,14 @@ namespace Model
     /// </summary>
     public class MainCat
     {
+        /// <summary>
+        /// 画面を表示するためのViewModel
+        /// </summary>
         private readonly MainCatViewModel viewModel;
 
+        /// <summary>
+        /// 表示の対象となるFenyaVO
+        /// </summary>
         private readonly ReactiveProperty<FenyaVO> fenyaObject = new ReactiveProperty<FenyaVO>();
 
         /// <summary>

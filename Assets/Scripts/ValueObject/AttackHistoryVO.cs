@@ -2,6 +2,9 @@
 
 namespace ValueObject
 {
+    /// <summary>
+    /// 対象のFenyaへの攻撃履歴のVO
+    /// </summary>
     public class AttackHistoryVO
     {
         private const string HISTORY_CLASS_NAME = "AttackHistory";
@@ -42,6 +45,10 @@ namespace ValueObject
             return query;
         }
 
+        /// <summary>
+        /// 設定されているFenyaVOへの攻撃履歴を取得するためのクエリを作成する
+        /// </summary>
+        /// <returns></returns>
         public NCMBQuery<NCMBObject> CreateAttackHistoryQueryByFenyaVO()
         {
             var query = new NCMBQuery<NCMBObject>(HISTORY_CLASS_NAME);
@@ -53,6 +60,7 @@ namespace ValueObject
 
         /// <summary>
         /// ユーザー名を指定して取得する
+        /// 特定のユーザーの過去の攻撃履歴を取得する際に使う
         /// </summary>
         /// <param name="player"></param>
         public AttackHistoryVO(PlayerVO player)
@@ -62,6 +70,7 @@ namespace ValueObject
 
         /// <summary>
         /// FenyaVO を指定して取得する
+        /// 特定のFenyaへの攻撃履歴すべてを取得する際に使う
         /// </summary>
         /// <param name="fenya"></param>
         public AttackHistoryVO(FenyaVO fenya)
