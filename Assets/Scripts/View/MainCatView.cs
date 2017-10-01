@@ -26,11 +26,25 @@ namespace View
         [SerializeField]
         private Button reloadButton;
 
+        [SerializeField]
+        private Button rankingButton;
+
         /// <summary>
         /// ViewModelをBind
         /// </summary>
         /// <param name="viewModel"></param>
         public void Bind(IMainCatViewModel viewModel)
+        {
+            SubscribeViewModelChange(viewModel);
+
+            SubscribePlayerInput(viewModel);
+        }
+
+        /// <summary>
+        /// ViewModelの変化を購読し、画面に反映させる
+        /// </summary>
+        /// <param name="viewModel"></param>
+        private void SubscribeViewModelChange(IMainCatViewModel viewModel)
         {
             viewModel.remainHp.SubscribeToText(remainHpText).AddTo(this);
 
@@ -42,12 +56,17 @@ namespace View
                 playerInputField.text = "";
                 attackButton.interactable = canAttack;
             }).AddTo(this);
+        }
 
-            playerInputField.OnValueChangedAsObservable().Subscribe(input =>
-            {
-                attackButton.interactable = input != null;
-            }).AddTo(this);
-            
+        /// <summary>
+        /// Playerの入力を購読する
+        /// </summary>
+        /// <param name="viewModel"></param>
+        private void SubscribePlayerInput(IMainCatViewModel viewModel)
+        {
+            playerInputField.OnValueChangedAsObservable()
+                .Subscribe(input => { attackButton.interactable = input != null; }).AddTo(this);
+
             attackButton.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(5)).Subscribe(_ =>
             {
                 var damageHours = float.Parse(playerInputField.text);
@@ -59,6 +78,8 @@ namespace View
                 playerInputField.text = "";
                 viewModel.OnClickReloadButton();
             }).AddTo(this);
+
+            rankingButton.OnClickAsObservable().Subscribe(_ => { viewModel.OnClickRankingButton(); }).AddTo(this);
         }
     }
 }

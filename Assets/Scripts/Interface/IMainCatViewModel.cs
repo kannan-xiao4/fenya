@@ -33,5 +33,10 @@ namespace Interface
         /// Fenyaの状態をリロード
         /// </summary>
         void OnClickReloadButton();
+
+        /// <summary>
+        /// ランキングページの表示
+        /// </summary>
+        void OnClickRankingButton();
     }
 }
